@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
-import { Employee } from '../interfaces/employee.interface';
+import { Employee } from './employee.entity';
 
 @Controller('employee')
 export class EmployeeController {
@@ -9,5 +9,10 @@ export class EmployeeController {
   @Get()
   async findAll(): Promise<Employee[]> {
     return this.employeeService.findAll();
+  }
+
+  @Post()
+  async create(@Body() createEmployee: Employee): Promise<Employee> {
+    return this.employeeService.create(createEmployee);
   }
 }

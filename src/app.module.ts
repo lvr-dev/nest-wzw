@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { EmployeeController } from './employee/employee.controller';
-import { EmployeeService } from './employee/employee.service';
+import { EmployeeModule } from './employee/employee.module';
 
 const dbPassw = process.env.DB_PASSW;
 
@@ -15,10 +15,15 @@ const dbPassw = process.env.DB_PASSW;
       port: 3306,
       username: 'leonie',
       password: dbPassw,
-
-    })
+      database: 'wzw_db',
+      entities: [__dirname + '/**/*.entity{.ts, .js}'],
+      synchronize: true
+    }),
+    EmployeeModule
   ],
-  controllers: [AppController, EmployeeController],
-  providers: [AppService, EmployeeService],
+  controllers: [AppController],
+  providers: [AppService ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly connection: Connection) {}
+}
